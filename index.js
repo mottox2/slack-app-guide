@@ -10,12 +10,14 @@ const sample = (req, res) => {
 
 const commands = require('./functions/commands')
 const actions = require('./functions/actions')
+const events = require('./functions/events')
 
 // 参考: https://github.com/googlesamples/functions-as-a-service
 exports.function = (req, res) => {
   const paths = {
     '/commands': commands,
     '/actions': actions,
+    '/events': events,
     '/sample': sample,
     '/': () => res.send(Object.keys(paths))
   }
