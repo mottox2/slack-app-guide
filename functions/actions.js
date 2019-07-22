@@ -7,6 +7,7 @@ module.exports = (req, res) => {
 
   const payload = JSON.parse(req.body.payload) // slashComandsとは内容の取り出し方が違うので注意
   const web = new WebClient(process.env.SLACK_TOKEN)
+  console.log(payload)
   switch (payload.type) {
     case 'block_actions':
       const action_id = payload.actions[0].action_id
@@ -93,6 +94,39 @@ module.exports = (req, res) => {
           link_names: 1
         })
         .catch(e => console.log(e.response))
+      break
+    case 'dialog_submission':
+      web.chat
+        .postMessage({
+          channel: payload.submission.channel,
+          text: '',
+          blocks: [
+            {
+              type: 'section',
+              text: {
+                type: 'mrkdwn',
+                text: payload.submission.name
+              }
+            },
+            {
+              block_id: 'task_actions',
+              type: 'actions',
+              elements: [
+                {
+                  type: 'button',
+                  text: {
+                    type: 'plain_text',
+                    text: 'Complete'
+                  },
+                  action_id: 'complete'
+                }
+              ]
+            }
+          ]
+        })
+        .catch(e => {
+          console.log(e.data)
+        })
       break
   }
 }
