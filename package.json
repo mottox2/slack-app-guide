@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "watch": "npm-watch functions",
-    "functions": "functions-framework"
+    "functions": "functions-framework",
+    "deploy": "gcloud functions deploy function --trigger-http --runtime nodejs10"
   },
   "watch": {
     "functions": "**/*.js"
